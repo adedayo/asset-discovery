@@ -40,7 +40,6 @@ func FindAssets(ctx context.Context, domain string, config Config) (assets []Ass
 		assets = append(assets, asset)
 	}
 
-	// fmt.Printf("All Domains (%d) %v\n", len(assets), assets)
 	return
 }
 
@@ -87,7 +86,6 @@ func discoverRelatedDomains(ctx context.Context, domain string, config Config) (
 				assetMap[cerr.URL] = cerr.CertificateChain
 				if len(certs) > 0 {
 					cert := certs[0]
-					// fmt.Printf("Cert: %#v, %#v\n", cert.DNSNames, cert.Subject.CommonName)
 					dd := cleanAll(append(cert.DNSNames, cert.Subject.CommonName))
 					addDomains(dd)
 				}

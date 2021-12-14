@@ -27,6 +27,7 @@ func addRoutes() {
 //ServeAPI serves the analysis service on the specified port
 func ServeAPI(config Config) {
 	hostPort := ":%d"
+	log.Printf("Service running at http://127.0.0.1:%d", config.ApiPort)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(hostPort, config.ApiPort), mux))
 }
 
@@ -45,13 +46,13 @@ func brandHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	defer r.Body.Close()
 	err = json.Unmarshal(data, &dq)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	ctx := r.Context()
-	r.URL.Query().Get("")
 	brands := discover.GetBrands(ctx, dq.Domain, discover.Config{})
 	json.NewEncoder(w).Encode(brands)
 }
